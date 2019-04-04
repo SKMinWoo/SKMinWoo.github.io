@@ -1,0 +1,118 @@
+CREATE DATABASE Hiker;
+
+USE Hiker;
+
+CREATE TABLE local_area(
+    local_area_ID int(10) NOT NULL AUTO_INCREMENT,
+    local_area_name int(10) NOT NULL,
+    coordinates varchar(50) NOT NULL,
+    
+    CONSTRAINT local_area_pk PRIMARY KEY(local_area_ID))ENGINE= InnoDB;
+
+CREATE TABLE role(
+    role_ID int(10) NOT NULL AUTO_INCREMENT,
+    title varchar(50) NOT NULL,
+    
+    CONSTRAINT role_pk PRIMARY KEY(role_ID))ENGINE= InnoDB;
+
+CREATE TABLE users(
+    user_ID int(10) NOT NULL AUTO_INCREMENT,
+    email varchar(50) NOT NULL,
+    fname varchar(50) NOT NULL,
+    lname varchar(50) NOT NULL,
+    password varchar(50) NOT NULL,
+    role_id int(10) NOT NULL,
+    
+    CONSTRAINT users_pk PRIMARY KEY(user_ID),
+    CONSTRAINT users_fk1 FOREIGN KEY (role_ID) REFERENCES role(role_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+
+CREATE TABLE difficulty(
+    difficulty_ID int(10) NOT NULL AUTO_INCREMENT,
+    difficulty_rating int(10) NOT NULL,
+    difficulty_Level varchar(50) NOT NULL,
+    
+    CONSTRAINT difficulty_pk PRIMARY KEY(difficulty_ID))ENGINE= InnoDB;
+    
+    CREATE TABLE preferences(
+    preference_ID int(10) NOT NULL AUTO_INCREMENT,
+    difficulty_ID int(10) NOT NULL,
+    local_area_ID int(10) NOT NULL,
+    user_ID int(10) NOT NULL,
+        
+    CONSTRAINT preferences_pk PRIMARY KEY(preference_ID),
+    CONSTRAINT preference_fk1 FOREIGN KEY (difficulty_ID) REFERENCES difficulty(difficulty_ID) ON UPDATE CASCADE,
+    CONSTRAINT preference_fk2 FOREIGN KEY (local_area_ID) REFERENCES local_area(local_area_ID) ON UPDATE CASCADE,
+    CONSTRAINT preference_fk3 FOREIGN KEY (user_ID) REFERENCES users(user_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+
+    CREATE TABLE reviews(
+    review_ID int(10) NOT NULL AUTO_INCREMENT,
+    difficulty_ID int(10) NOT NULL,
+    user_ID int(10) NOT NULL,
+    rating int(10) NOT NULL,
+    review_text varchar(500) NOT NULL,
+        
+    CONSTRAINT review_pk PRIMARY KEY(review_ID),
+    CONSTRAINT review_fk1 FOREIGN KEY(difficulty_ID) REFERENCES difficulty(difficulty_ID) ON UPDATE CASCADE,
+    CONSTRAINT review_fk2 FOREIGN KEY (user_ID) REFERENCES users(user_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+
+    CREATE TABLE card(
+    card_ID int(10) NOT NULL AUTO_INCREMENT,
+    user_ID int(10) NOT NULL,
+    card_Number int(19) NOT NULL,
+    cardholder_Name varchar(50) NOT NULL,
+    address varchar(50) NOT NULL,
+    state varchar(50) NOT NULL,
+    zip int(5) NOT NULL,
+    expiration_Date date NOT NULL,
+    csv int(3) NOT NULL,
+        
+    CONSTRAINT card_pk PRIMARY KEY(card_ID),
+    CONSTRAINT card_fk1 FOREIGN KEY (user_ID) REFERENCES users(user_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+
+    CREATE TABLE product(
+    product_ID int(10) NOT NULL AUTO_INCREMENT,
+    product_name varchar(50) NOT NULL,
+    product_price int(10) NOT NULL,
+        
+    CONSTRAINT product_pk PRIMARY KEY(product_ID))ENGINE= InnoDB;
+
+    CREATE TABLE orders(
+    order_ID int(10) NOT NULL AUTO_INCREMENT,
+    user_ID int(10) NOT NULL,
+    card_ID int(10) NOT NULL,
+    order_date date NOT NULL,
+        
+    CONSTRAINT orders_pk PRIMARY KEY(order_ID),
+	CONSTRAINT orders_fk1 FOREIGN KEY (user_ID) REFERENCES users(user_ID) ON UPDATE CASCADE,
+	CONSTRAINT orders_fk2 FOREIGN KEY (card_ID) REFERENCES card(card_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+    
+    CREATE TABLE orderline(
+    orderline_ID int(10) NOT NULL AUTO_INCREMENT,
+    order_ID int(10) NOT NULL,
+    product_ID int(10) NOT NULL,
+    quantity int(10) NOT NULL,
+        
+    CONSTRAINT orderline_pk PRIMARY KEY(orderline_ID),
+    CONSTRAINT orderline_fk1 FOREIGN KEY (order_ID) REFERENCES orders(order_ID) ON UPDATE CASCADE,
+	CONSTRAINT orderline_fk2 FOREIGN KEY (product_ID) REFERENCES product(product_ID) ON UPDATE CASCADE)ENGINE= InnoDB;
+
+
+
+INSERT INTO `role`(`role_ID`, `title`) VALUES (1,"user")
+
+INSERT INTO `role`(`role_ID`, `title`) VALUES (2,"admin")
+
+INSERT INTO `users`(`user_ID`, `email`, `fname`, `lname`, `password`, `role_id`) VALUES (1,"alexkim.02@hotmail.com","Alex","Kim","123",1)
+
+INSERT INTO `difficulty`(`difficulty_ID`, `difficulty_rating`, `difficulty_level`) VALUES (1,5,"Expert"),
+(2,4,"Advanced"),
+(3,3,"Intermediate"),
+(4,2,"Casual"),
+(5,1,"Beginner")
+
+INSERT INTO `reviews`(`review_ID`, `difficulty_ID`, `user_ID`, `rating`, `review_text`) VALUES (1,1,1,1, "Difficulty Level 1 Beginner"),
+(2,2,1,1, "Difficulty Level 2 Casual"),
+(3,3,1,1, "Difficulty Level 3 Intermediate"),
+(4,4,1,1, "Difficulty Level 4 Advanced"),
+(5,5,1,1, "Difficulty Level 5 Expert")
+

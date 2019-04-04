@@ -1,0 +1,11 @@
+Once the SQL database has been loaded:
+Default Admin is User_ID 2, Alexander Kim with 
+email: alexjayk@gmail.com
+password: asd
+
+Admin can add and delete users.
+
+Log in as a regular user to explore the web pages and additional functionality.
+To log in as a regular user, simply create and account and log in using that account.
+
+Enjoy!
